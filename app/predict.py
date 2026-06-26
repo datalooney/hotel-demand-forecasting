@@ -153,9 +153,17 @@ for room in ['Deluxe', 'Standard', 'Suite']:
             'week', 'lag_1','lag_7','rolling_7', 'event_name_Diwali',
             'event_name_New Year','event_name_Tamil New Year',
             "event_name_Valentine's Day"]
+        
         X = X[features]
-        #X_df.append(X.T)
+
         pred1 = model1.predict(X)[0]
+        feature_row = X.iloc[0].to_dict()
+
+        feature_row['date'] = forecast_date
+        feature_row['room_type_name'] = room
+        feature_row['prediction_xgb'] = pred1
+
+        X_df.append(feature_row)
 
         #pred2 = model2.predict(X)[0]
 
@@ -176,6 +184,7 @@ for room in ['Deluxe', 'Standard', 'Suite']:
 # Final dataframe
 # ---------------------------
 forecast_df = pd.DataFrame(predictions)
-#Xdf = pd.DataFrame(X_df)
-print(history)
+Xdf = pd.DataFrame(X_df)
+print("History:",history)
+print("features:",Xdf)
 print(forecast_df.head())
