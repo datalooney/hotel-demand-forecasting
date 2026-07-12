@@ -176,20 +176,27 @@ def forecast_bookings(data_path, model1_path, model2_path,
 
     #print("History1:",history1)
     #print("History2:",history2)
-    print(forecast_df.head())
+    #print(forecast_df.head())
 
        
     return forecast_df
 
-model1_path = "/workspaces/hotel-demand-forecasting/models/hotel_demand_xgb.pkl"
-model2_path = "/workspaces/hotel-demand-forecasting/models/hotel_demand_xgb_price.pkl"
-encoder_path = "/workspaces/hotel-demand-forecasting/models/label_encoders.pkl"
-feature_path = "/workspaces/hotel-demand-forecasting/models/features.pkl"
-hoteldata_path = "/workspaces/hotel-demand-forecasting/data/hotel_daily_booking_data_2024_2025.xlsx"
-starting_date = "2025-12-02"
-ending_date = "2025-12-31"
+if __name__ == "__main__":
 
-forecast_daily = forecast_bookings(data_path = hoteldata_path, model1_path = model1_path, model2_path = model2_path,
-encoder_path = encoder_path, feature_path = feature_path, start_date = starting_date, end_date = ending_date)
+    model1_path = "/workspaces/hotel-demand-forecasting/models/hotel_demand_xgb.pkl"
+    model2_path = "/workspaces/hotel-demand-forecasting/models/hotel_demand_xgb_price.pkl"
+    encoder_path = "/workspaces/hotel-demand-forecasting/models/label_encoders.pkl"
+    feature_path = "/workspaces/hotel-demand-forecasting/models/features.pkl"
+    hoteldata_path = "/workspaces/hotel-demand-forecasting/data/hotel_daily_booking_data_2024_2025.xlsx"
+    starting_date = "2025-12-02"
+    ending_date = "2025-12-31"
 
-print(forecast_daily)
+    forecast_daily = forecast_bookings(data_path = hoteldata_path, model1_path = model1_path, model2_path = model2_path,
+    encoder_path = encoder_path, feature_path = feature_path, start_date = starting_date, end_date = ending_date)
+
+
+    print(forecast_daily)
+
+
+
+
