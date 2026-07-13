@@ -43,21 +43,24 @@ if predict:
     st.subheader("Forecast Results")
     st.dataframe(forecast_df, use_container_width = True)
 
-    #-------------------------#
-    #   Add room selector     
-    #-------------------------#
-    room = st.selectbox(  "Room Type",
-    forecast_df["room_type"].unique()
-    )
+    
+    # ---------------------
+    # Room Type Selector
+    # ---------------------
+
+    room = st.selectbox("Select Room Type", forecast_df["room_type"].unique())
 
     room_df = forecast_df[ forecast_df["room_type"] == room]
+
+    st.subheader(f"{room} Forecast")
+
+    st.dataframe(room_df, use_container_width=True)
 
     #---------------------------#
     #         Plots             #
     #---------------------------#
     import plotly.express as px
 
-    fig = px.line(room_df,   x="date",   y="forecast",     title=f"{room} Forecast")
+    fig = px.line(room_df, x="date", y="forecast", title=f"{room} Forecast")
 
-    st.plotly_chart( fig,   use_container_width=True
-)
+    st.plotly_chart( fig,   use_container_width=True)
