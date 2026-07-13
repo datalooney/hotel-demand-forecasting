@@ -55,12 +55,7 @@ if predict:
     st.subheader(f"{room} Forecast")
 
     st.dataframe(room_df, use_container_width=True)
-
-    #---------------------------#
-    #         Plots             #
-    #---------------------------#
-    import plotly.express as px
-
-    fig = px.line(room_df, x="date", y="forecast", title=f"{room} Forecast")
-
-    st.plotly_chart( fig,   use_container_width=True)
+    
+    room = st.sidebar.selectbox(    "Room Type",    ["Deluxe", "Standard", "Suite"])
+    room_df = forecast_df[ forecast_df["room_type"] == room]
+    
