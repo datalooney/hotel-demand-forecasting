@@ -1,5 +1,8 @@
 import streamlit as st
 from predfunc import forecast_bookings
+import plotly.express as px
+import plotly.graph_objects as go
+
 st.set_page_config(page_title="Hotel Demand Forecasting",
                    layout= "wide")
 
@@ -10,8 +13,20 @@ st.write( "Forecast hotel room bookings using trained XGBoost models.")
 #  SideBar            #
 #---------------------#
 st.sidebar.header("Forecast Settings")
-start_date = st.sidebar.date_input("Forecast Start Date",value=None)
-end_date = st.sidebar.date_input("Forecast End Date",value=None)
+
+start_date = st.sidebar.date_input(
+    "Forecast Start Date",
+    value=None)
+
+end_date = st.sidebar.date_input(
+    "Forecast End Date",
+    value=None)
+
+room = st.sidebar.selectbox(
+    "Room Type",
+    ["All Rooms", "Deluxe", "Standard", "Suite"]
+)
+
 
 #--------------------#
 #       Predict      #
@@ -37,25 +52,54 @@ if predict:
 
     st.success("Forecast Complete!")
 
-    #---------------------#
-    #  Display Forecasts  #
-    #---------------------#
-    st.subheader("Forecast Results")
-    st.dataframe(forecast_df, use_container_width = True)
-
-    
+      
     # ---------------------
     # Room Type Selector
     # ---------------------
 
-    room = st.selectbox("Select Room Type", forecast_df["room_type"].unique())
-
-    room_df = forecast_df[ forecast_df["room_type"] == room]
-
-    st.subheader(f"{room} Forecast")
-
-    st.dataframe(room_df, use_container_width=True)
     
-    room = st.sidebar.selectbox(    "Room Type",    ["Deluxe", "Standard", "Suite"])
-    room_df = forecast_df[ forecast_df["room_type"] == room]
+    if room == "All Rooms":
+        display_df = forecast_df.copy()
+    else:
+        display_df = forecast_df[
+        forecast_df["room_type"] == room]
+
+    st.subheader("Forecast Results")
+    st.dataframe(display_df, use_container_width=True)
     
+    st.subheader("Forecast Plot")
+
+    if room == "All Rooms":
+        fig = px.line(
+        display_df,
+        x="date",
+        y="forecast",
+        color="room_type",
+        markers=True,
+        title="Forecasted Bookings by Room Type"
+        )
+
+        fig.update_layout(
+        xaxis_title="Date",
+        yaxis_title="Forecast Bookings",
+        hovermode="x unified"
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
+
+    else:
+        fig = px.line(
+        display_df,
+        x="date",
+        y="forecast",
+        markers=True,
+        title=f"{room} Forecast"
+        )
+
+        fig.update_layout(
+        xaxis_title="Date",
+        yaxis_title="Forecast Bookings",
+        hovermode="x unified"
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
