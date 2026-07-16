@@ -94,8 +94,7 @@ if predict:
 
         st.plotly_chart(fig, use_container_width=True)
 
-    actual_df = pd.read_excel( "/workspaces/hotel-demand-forecasting/data/hotel_daily_booking_data_2024_2025.xlsx",
-    skiprows=1)
+    actual_df = pd.read_excel( DATA_PATH, skiprows=1)
 
     actual_df["date"] = pd.to_datetime(actual_df["date"])
     actual_df = actual_df[(actual_df["date"] >= pd.to_datetime(start_date)) &
