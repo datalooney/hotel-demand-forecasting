@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 from predfunc import forecast_bookings
 import plotly.express as px
 import plotly.graph_objects as go
@@ -103,3 +104,86 @@ if predict:
         )
 
         st.plotly_chart(fig, use_container_width=True)
+
+    actual_df = pd.read_excel( "/workspaces/hotel-demand-forecasting/data/hotel_daily_booking_data_2024_2025.xlsx",
+    skiprows=1)
+
+    actual_df["date"] = pd.to_datetime(actual_df["date"])
+    actual_df = actual_df[(actual_df["date"] >= pd.to_datetime(start_date)) &
+    (actual_df["date"] <= pd.to_datetime(end_date))]
+
+    if room != "All Rooms":
+        actual_df = actual_df[actual_df["room_type"] == room ]
+
+    comparison_df = display_df.merge(actual_df[["date","room_type","bookings"]],
+    on=["date","room_type"], how="left")
+
+    comparison_df.rename( columns={  "bookings":"actual_bookings" }, inplace=True)
+    st.subheader("Forecast vs Actual")
+
+    st.dataframe( comparison_df, use_container_width=True)
+
+    if room == "All Rooms":
+        fig = go.Figure()
+
+        colors = { "Deluxe": "blue",  "Standard": "green",  "Suite": "red"  }
+
+        for room_name in comparison_df["room_type"].unique():
+            temp = comparison_df[comparison_df["room_type"] == room_name ]
+
+            # Forecast
+            fig.add_trace(
+            go.Scatter(
+                x=temp["date"],
+                y=temp["forecast"],
+                mode="lines+markers",
+                name=f"{room_name} Forecast",
+                line=dict(color=colors[room_name])
+            )
+            )
+
+            # Actual
+            fig.add_trace(
+            go.Scatter(
+                x=temp["date"],
+                y=temp["actual_bookings"],
+                mode="lines+markers",
+                name=f"{room_name} Actual",
+                line=dict(
+                    color=colors[room_name],
+                    dash="dash"
+                )
+            )
+            )
+
+    else:
+        fig = go.Figure()
+
+        fig.add_trace(
+        go.Scatter(
+            x=comparison_df["date"],
+            y=comparison_df["forecast"],
+            mode="lines+markers",
+            name="Forecast",
+            line=dict(color="blue")
+        )
+        )
+
+        fig.add_trace(
+        go.Scatter(
+            x=comparison_df["date"],
+            y=comparison_df["actual_bookings"],
+            mode="lines+markers",
+            name="Actual",
+            line=dict(color="red")
+        )
+        )
+
+    fig.update_layout(
+    title="Forecast vs Actual Bookings",
+    xaxis_title="Date",
+    yaxis_title="Bookings",
+    hovermode="x unified"
+    )
+
+    st.plotly_chart(fig, use_container_width=True)
