@@ -71,37 +71,21 @@ if predict:
     st.subheader("Forecast Plot")
 
     if room == "All Rooms":
-        fig = px.line(
-        display_df,
-        x="date",
-        y="forecast",
-        color="room_type",
-        markers=True,
-        title="Forecasted Bookings by Room Type"
-        )
+        fig = px.line( display_df,  x="date",
+        y="forecast",  color="room_type",
+        markers=True,  title="Forecasted Bookings by Room Type"  )
 
-        fig.update_layout(
-        xaxis_title="Date",
-        yaxis_title="Forecast Bookings",
-        hovermode="x unified"
-        )
+        fig.update_layout( xaxis_title="Date",
+        yaxis_title="Forecast Bookings", hovermode="x unified"  )
 
         st.plotly_chart(fig, use_container_width=True)
 
     else:
-        fig = px.line(
-        display_df,
-        x="date",
-        y="forecast",
-        markers=True,
-        title=f"{room} Forecast"
-        )
+        fig = px.line( display_df,  x="date",
+        y="forecast", markers=True,   title=f"{room} Forecast"    )
 
-        fig.update_layout(
-        xaxis_title="Date",
-        yaxis_title="Forecast Bookings",
-        hovermode="x unified"
-        )
+        fig.update_layout(  xaxis_title="Date",  yaxis_title="Forecast Bookings",
+        hovermode="x unified"  )
 
         st.plotly_chart(fig, use_container_width=True)
 
