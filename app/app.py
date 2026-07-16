@@ -3,9 +3,20 @@ import pandas as pd
 from predfunc import forecast_bookings
 import plotly.express as px
 import plotly.graph_objects as go
+from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parent.parent
 
-st.set_page_config(page_title="Hotel Demand Forecasting",
-                   layout= "wide")
+DATA_PATH = BASE_DIR / "data" / "hotel_daily_booking_data_2024_2025.xlsx"
+
+MODEL1_PATH = BASE_DIR / "models" / "hotel_demand_xgb.pkl"
+
+MODEL2_PATH = BASE_DIR / "models" / "hotel_demand_xgb_price.pkl"
+
+ENCODER_PATH = BASE_DIR / "models" / "label_encoders.pkl"
+
+FEATURE_PATH = BASE_DIR / "models" / "features.pkl"
+
+st.set_page_config(page_title="Hotel Demand Forecasting", layout= "wide")
 
 st.title("Hotel Demand Forecating")
 st.write( "Forecast hotel room bookings using trained XGBoost models.")
@@ -103,10 +114,9 @@ if predict:
     on=["date","room_type"], how="left")
 
     comparison_df.rename( columns={  "bookings":"actual_bookings" }, inplace=True)
-    st.subheader("Forecast vs Actual")
+    st.subheader("Forecast vs Actual Value")
 
     st.dataframe( comparison_df, use_container_width=True)
-
     if room == "All Rooms":
         fig = go.Figure()
 
@@ -171,3 +181,5 @@ if predict:
     )
 
     st.plotly_chart(fig, use_container_width=True)
+
+    
