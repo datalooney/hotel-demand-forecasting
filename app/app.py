@@ -52,15 +52,9 @@ if predict:
 
     with st.spinner("Generating forecasts..."):
 
-        forecast_df = forecast_bookings(
-            data_path= "/workspaces/hotel-demand-forecasting/data/hotel_daily_booking_data_2024_2025.xlsx",
-            model1_path="/workspaces/hotel-demand-forecasting/models/hotel_demand_xgb.pkl",
-            model2_path="/workspaces/hotel-demand-forecasting/models/hotel_demand_xgb_price.pkl",
-            encoder_path="/workspaces/hotel-demand-forecasting/models/label_encoders.pkl",
-            feature_path="/workspaces/hotel-demand-forecasting/models/features.pkl",
-            start_date=start_date,
-            end_date=end_date
-        )
+        forecast_df = forecast_bookings( data_path=DATA_PATH, model1_path=MODEL1_PATH,
+        model2_path=MODEL2_PATH, encoder_path=ENCODER_PATH,  feature_path=FEATURE_PATH,
+        start_date=start_date, end_date=end_date)
 
     st.success("Forecast Complete!")
 
