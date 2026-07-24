@@ -26,13 +26,22 @@ st.write( "Forecast hotel room bookings using trained XGBoost models.")
 #---------------------#
 st.sidebar.header("Forecast Settings")
 
+MIN_DATE = pd.to_datetime("2025-12-02").date()
+MAX_DATE = pd.to_datetime("2025-12-31").date()
+
 start_date = st.sidebar.date_input(
     "Forecast Start Date",
-    value=None)
+    value=MIN_DATE,
+    min_value=MIN_DATE,
+    max_value=MAX_DATE
+)
 
 end_date = st.sidebar.date_input(
     "Forecast End Date",
-    value=None)
+    value=MAX_DATE,
+    min_value=start_date,
+    max_value=MAX_DATE
+)
 
 room = st.sidebar.selectbox(
     "Room Type",
