@@ -424,4 +424,4 @@ This automatically creates:
 
 with much less code.
 
-### For your Streamlit app, I'd recommend this `melt()` + `px.line()` approach. It's cleaner, easier to maintain, and scales well if you later add another series (for example, predictions from each individual model in addition to the median forecast).
+
