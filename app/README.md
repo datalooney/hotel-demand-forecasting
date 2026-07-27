@@ -424,4 +424,6 @@ This automatically creates:
 
 with much less code.
 
-
+### app.py is the stanalone streamlit app that uses predfunc.py
+### api.py is the fastapi script that runs on its own
+### api_app.py is the streamlit app that runs with api.py using fastapi to call the forecast function from api.py
